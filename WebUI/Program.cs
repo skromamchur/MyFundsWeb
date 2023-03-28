@@ -9,14 +9,12 @@ var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").B
 
 // Add services to the container.
 builder.Services
-    .AddInfrastructure(configuration)
-    .AddDomain()
-    .AddApplication()
+    .AddApplication(configuration)
     .AddControllersWithViews();
 
 var logger = new LoggerConfiguration()
     .WriteTo.Console()
-    .WriteTo.Seq(configuration.GetSection("Seq:ServerUrl").Value)
+    .WriteTo.Seq(configuration.GetSection("Seq:ServerUrl").Value!)
     .CreateLogger();
 
 logger.Information("Logger started!");

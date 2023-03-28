@@ -14,7 +14,7 @@ namespace Domain.Models
             this.Password = Password;
         }
 
-        public string Login { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        public string Login { get; set; }
+        public string Password { get; set; }
     }
 }

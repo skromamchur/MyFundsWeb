@@ -1,0 +1,21 @@
+﻿@model WebUI.Models.CreateUserViewModel
+@{
+    ViewData["Title"] = "Account Page";
+}
+
+<form asp-antiforgery="true" asp-controller="Account" asp-action="SignUp" method="post">
+    <div>
+        <input asp-for="Login" class="form-control" type="text" placeholder="Username" />
+        <span asp-validation-for="Login"></span>
+    </div>
+    <div class="mt-4">
+        <input asp-for="Password" class="form-control" type="password" placeholder="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <button type="submit" class="btn btn-primary mt-4">Sign up</button>
+</form>
+
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

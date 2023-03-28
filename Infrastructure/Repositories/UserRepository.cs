@@ -10,6 +10,11 @@ namespace Infrastructure.Repositories
 
         public UserRepository(string connectionString)
         {
+            if(connectionString == null)
+            {
+                throw new ArgumentNullException(nameof(connectionString));
+            }
+
             _context = new Context(connectionString);
         }
 
