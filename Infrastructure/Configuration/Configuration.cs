@@ -9,7 +9,9 @@ namespace Infrastructure.Configuration
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfigurationRoot configuration)
         {
-            return services.AddSingleton<IUserRepository>(Provider => new UserRepository(configuration.GetSection("ConnectionString").Value!));
+            return services
+                .AddSingleton<IUserRepository>(Provider => new UserRepository(configuration.GetSection("ConnectionString").Value!))
+                .AddSingleton<ITransactionRepository>(Provider => new TransactionRepository(configuration.GetSection("ConnectionString").Value!));
         }
     }
 }

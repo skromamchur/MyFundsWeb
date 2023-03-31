@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Infrastructure.Enteties
+﻿namespace Infrastructure.Enteties
 {
     public class UserDB
     {
@@ -8,13 +6,15 @@ namespace Infrastructure.Enteties
         {
             this.Login = login;
             this.Password = password;
+            this.Transactions = new List<TransactionDB>();
         }
 
-        [Key]
         public int Id { get; set; }
 
         public string Login { get; set; }
 
         public string Password { get; set; }
+
+        public List<TransactionDB> Transactions { get; set; }
     }
 }

@@ -1,0 +1,71 @@
+﻿@model TransactionViewModel
+@{
+    ViewData["Title"] = "Account Page";
+}
+
+<link rel="stylesheet" href="~/css/transactions.css" />
+<h2>Create Transaction</h2>
+
+@using (Html.BeginForm("Create", "Transaction", FormMethod.Post))
+{
+    @Html.LabelFor(m => m.Value)
+    @Html.TextBoxFor(m => m.Value)
+    <br />
+
+    @Html.LabelFor(m => m.Category)
+    @Html.TextBoxFor(m => m.Category)
+    <br />
+
+    @Html.LabelFor(m => m.IsIncome)
+    @Html.CheckBoxFor(m => m.IsIncome)
+    <br />
+
+    @Html.LabelFor(m => m.Date)
+    @Html.TextBoxFor(m => m.Date, "{0:yyyy-MM-dd}", new { @class = "datepicker" })
+    <br />
+
+    @Html.LabelFor(m => m.Currency)
+    @Html.TextBoxFor(m => m.Currency)
+    <br />
+
+    @Html.LabelFor(m => m.UserId)
+    @Html.TextBoxFor(m => m.UserId)
+    <br />
+
+    <input type="submit" value="Create" />
+}
+
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Value</th>
+                <th>Currency</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in Model.Transactions)
+            {
+                <tr>
+                    <td>@transaction.Date.ToShortDateString()</td>
+                    <td>@transaction.Category</td>
+                    <td>
+                        @if (transaction.IsIncome)
+                        {
+                            <span class="text-green">@transaction.Value</span>
+                        }
+                        else
+                        {
+                            <span class="text-red">@transaction.Value</span>
+                        }
+                    </td>
+                    <td>@transaction.Currency</td>
+                    <td>Edit</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -18,9 +18,9 @@ namespace Infrastructure.Repositories
             _context = new Context(connectionString);
         }
 
-        public void AddUser(User user)
+        public void AddUser(Domain.Models.User user)
         {
-            _context.Users.Add(new UserDB(user.Login, user.Password));
+            _context.Users.Add(new Enteties.UserDB(user.Login, user.Password));
             _context.SaveChanges();
         }
     }

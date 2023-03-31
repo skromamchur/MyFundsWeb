@@ -9,7 +9,9 @@ var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").B
 
 // Add services to the container.
 builder.Services
-    .AddApplication(configuration)
+    .AddInfrastructure(configuration)
+    .AddApplication()
+    .AddDomain()
     .AddControllersWithViews();
 
 var logger = new LoggerConfiguration()

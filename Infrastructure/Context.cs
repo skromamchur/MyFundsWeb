@@ -8,7 +8,10 @@ namespace Infrastructure
         private readonly string _connectionString;
 
         public Context(string connectionString) {
-            _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));            
+            _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+
+            //Database.EnsureDeleted();
+            Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -17,5 +20,6 @@ namespace Infrastructure
         }
 
         public DbSet<UserDB> Users { get; set; }
+        public DbSet<TransactionDB> Transactions { get; set; }
     }
 }
