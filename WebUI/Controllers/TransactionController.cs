@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Domain.Models;
 using WebUI.Models;
 using Application.Handlers.Interfaces;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebUI.Controllers
 {
+    [Authorize]
     public class TransactionController : Controller
     {
         private readonly IApplicationTransactionHandler _transactionHandler;
@@ -16,20 +18,26 @@ namespace WebUI.Controllers
 
         public IActionResult Index()
         {
-            var userId = 1; // hardcoded for testing
+            var userId = Convert.ToInt32(User.FindFirstValue("Id")); 
             var userTransactions = _transactionHandler.GetUserTransactions(userId);
             var viewModel = new TransactionViewModel
             {
-                Transactions = userTransactions,
-                UserId = userId
+                Transactions = userTransactions
             };
             return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult Create(TransactionViewModel model)
+        public ActionResult CreateIncome(TransactionViewModel model)
         {
-            _transactionHandler.OnCreateTransaction(model.Value, model.Category, model.IsIncome, DateTime.UtcNow, model.Currency, model.UserId);
+            _transactionHandler.OnCreateTransaction(model.Value, model.Category, true, model.Currency, Convert.ToInt32(User.FindFirstValue("Id")));
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult CreateExpend(TransactionViewModel model)
+        {
+            _transactionHandler.OnCreateTransaction(model.Value, model.Category, false, model.Currency, Convert.ToInt32(User.FindFirstValue("Id")));
             return RedirectToAction("Index");
         }
     }

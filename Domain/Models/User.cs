@@ -2,13 +2,8 @@
 {
     public class User
     {
-        public User(string Login, string Password)
-        {
-            this.Login = Login;
-            this.Password = Password;
-        }
-
-        public string Login { get; set; }
-        public string Password { get; set; }
+        public int Id { get; set; }
+        public string Login { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
     }
 }

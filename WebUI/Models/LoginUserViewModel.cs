@@ -2,7 +2,7 @@
 
 namespace WebUI.Models
 {
-    public class CreateUserViewModel
+    public class LoginUserViewModel
     {
         [Required(ErrorMessage = "Login name is required")]
         public string Login { get; set; } = string.Empty;
@@ -11,8 +11,5 @@ namespace WebUI.Models
         [MinLength(6, ErrorMessage = "Password should be at least 6 characters long")]
         public string Password { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Confirm password is required")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; } = string.Empty;
     }
 }

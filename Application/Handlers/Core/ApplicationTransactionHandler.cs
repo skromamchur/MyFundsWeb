@@ -11,13 +11,24 @@ namespace Application.Handlers.Core
             _transactionService = transactionService;
         }
 
+        public List<TransactionCategory> GetTransactionCategories(int UserId, bool IsIncome)
+        {
+            return _transactionService.GetUserTransactionsDividedIntoCategories(UserId, IsIncome);
+        }
+
         public List<Transaction> GetUserTransactions(int UserId)
         {
            return _transactionService.GetUserTransactions(UserId); 
         }
 
-        public void OnCreateTransaction(decimal value, string category, bool isIncome, DateTime date, string currency, int userId) {
-            _transactionService.AddTransaction(new Domain.Models.Transaction(value, category, isIncome, date, currency, userId));
+        public void OnCreateTransaction(decimal value, string category, bool isIncome, string currency, int userId) {
+            _transactionService.AddTransaction(new Domain.Models.Transaction() { 
+                Value = value,
+                Category = category,
+                IsIncome = isIncome,
+                Currency = currency,
+                UserId = userId
+            });
         }
     }
 }

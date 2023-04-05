@@ -20,7 +20,24 @@ namespace Domain.Services.Core
 
         public List<Transaction> GetUserTransactions(int UserId)
         {
-            return _transactionRepository.GetUserTransactions(UserId); 
+            return _transactionRepository.GetAllTransactions().Where(t => t.UserId == UserId).ToList();
+        }
+
+        public List<TransactionCategory> GetUserTransactionsDividedIntoCategories(int UserId, bool IsIncome)
+        {
+            List<Transaction> transactions = _transactionRepository.GetAllTransactions();
+
+            List<TransactionCategory> categories = transactions
+                .Where(t => t.IsIncome == IsIncome && t.UserId == UserId)
+                .GroupBy(t => t.Category)
+                .Select(g => new TransactionCategory
+                {
+                    Name = g.Key,
+                    Value = g.Sum(t => t.Value)
+                })
+                .ToList();
+
+            return categories;
         }
     }
 }

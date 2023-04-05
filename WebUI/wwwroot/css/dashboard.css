@@ -1,0 +1,46 @@
+﻿body {
+    background-color: #f3f4f6;
+}
+
+.chart-wrapper {
+    padding: 2rem;
+    border: solid 1px #d1d5db;
+    margin-top: 32px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.apexcharts-legend {
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.apexcharts-legend-series:not(:first-child) {
+    display: flex;
+    align-items: center;
+    margin-top: 16px !important;
+}
+
+.apexcharts-legend-marker {
+    width: 16px !important;
+    height: 16px !important;
+    margin-right: 0.75rem !important;
+}
+
+.apexcharts-legend-text {
+    font-family: "Inter", sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    color: #111827 !important;
+}
+
+.chart-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: -0.025em;
+    color: #111827;
+    margin-bottom: 1.5rem;
+}
+

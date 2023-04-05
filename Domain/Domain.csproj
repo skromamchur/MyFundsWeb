@@ -22,4 +22,7 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+	<InternalsVisibleTo Include="Domain.Tests" />
+  </ItemGroup>	
 </Project>

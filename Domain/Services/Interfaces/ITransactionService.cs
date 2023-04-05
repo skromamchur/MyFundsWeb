@@ -6,5 +6,6 @@ namespace Domain.Services.Interfaces
     {
         public void AddTransaction(Transaction transaction);
         public List<Transaction> GetUserTransactions(int UserId);
+        public List<TransactionCategory> GetUserTransactionsDividedIntoCategories(int UserId, bool IsIncome);
     }
 }

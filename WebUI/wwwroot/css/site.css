@@ -19,4 +19,53 @@ html {
 
 body {
   margin-bottom: 60px;
+  font-family : "Inter", sans-serif;
 }
+
+.header-wrapper {
+    display: flex;
+    align-items : center;
+}
+
+.header_wrapper__links a:not(:last-child) {
+    margin-right : 24px;
+}
+
+.header_wrapper__links i {
+    margin-right: 4px;
+}
+
+.header_wrapper__links a {
+    text-decoration: none !important;
+    cursor: pointer;
+    line-height: 1.5rem;
+    font-weight: 500;
+    color: #111827 !important;
+    font-size: 18px;
+}
+
+.logout-button {
+    text-decoration: none !important;
+    cursor: pointer;
+    line-height: 1.5rem;
+    font-weight: 500;
+    color: #111827 !important;
+}
+
+    .logout-button:hover {
+        color: #dc2626 !important;
+    }
+
+.navbar {
+    line-height: 1.5rem;
+    font-weight: 500;
+    color: #111827 !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+

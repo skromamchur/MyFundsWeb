@@ -2,7 +2,6 @@
 using Domain.Repositories;
 using Infrastructure.Enteties;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace Infrastructure.Repositories
 {
@@ -29,7 +28,7 @@ namespace Infrastructure.Repositories
                 IsIncome = transaction.IsIncome,
                 Date = DateTime.UtcNow,
                 Currency = transaction.Currency,
-                User = _context.Users.Find(1)!
+                User = _context.Users.Find(transaction.UserId)!
             });
             _context.SaveChanges();
         }
@@ -37,25 +36,46 @@ namespace Infrastructure.Repositories
         public List<Transaction> GetUserTransactions(int UserId)
         {
             var user = _context.Users
-                       .Include(u => u.Transactions) // eager load Transactions
-                       .FirstOrDefault(u => u.Id == 1);
+                       .Include(u => u.Transactions)
+                       .FirstOrDefault(u => u.Id == UserId);
 
             List<TransactionDB> transactionDBs = user.Transactions.ToList();
 
             var transactions = new List<Transaction>();
+
             foreach (var transactionDB in transactionDBs)
             {
-                var transaction = new Transaction(
-                    transactionDB.Value,
-                    transactionDB.Category,
-                    transactionDB.IsIncome,
-                    transactionDB.Date,
-                    transactionDB.Currency
-                );
+                var transaction = new Transaction() {
+                   Value = transactionDB.Value,
+                   Category = transactionDB.Category,
+                   IsIncome = transactionDB.IsIncome,
+                   Date =  transactionDB.Date,
+                   Currency =  transactionDB.Currency
+                };
                 transactions.Add(transaction);
             }
 
-            Console.WriteLine(transactions);
+            return transactions;
+        }
+
+        public List<Transaction> GetAllTransactions() {
+            List<TransactionDB> transactionDBs = _context.Transactions.Include(t => t.User).ToList();
+
+            var transactions = new List<Transaction>();
+
+            foreach (var transactionDB in transactionDBs)
+            {
+                var transaction = new Transaction()
+                {
+                    Value = transactionDB.Value,
+                    Category = transactionDB.Category,
+                    IsIncome = transactionDB.IsIncome,
+                    Date = transactionDB.Date,
+                    Currency = transactionDB.Currency,
+                    UserId = transactionDB.User.Id
+                };
+                transactions.Add(transaction);
+            }
 
             return transactions;
         }

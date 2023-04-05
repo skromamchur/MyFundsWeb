@@ -1,4 +1,5 @@
-﻿using Domain.Repositories;
+﻿using Domain.Models;
+using Domain.Repositories;
 using Domain.Services.Interfaces;
 
 namespace Domain.Services.Core
@@ -11,9 +12,32 @@ namespace Domain.Services.Core
             _userRepository = userRepository;            
         }
 
-        public void RegisterUser(string login, string password)
+        public User FindUserByCredentials(string login, string password)
         {
-            _userRepository.AddUser(new Models.User(login, password));
+            List<User> users = _userRepository.GetAllUsers();
+            var foundedUser =  users.FirstOrDefault(u => u.Login == login && u.Password == password);
+
+            if(foundedUser == null)
+            {
+                throw new UnauthorizedAccessException("Invalid credentials");
+            }
+
+           return foundedUser;
+        }
+
+        public User RegisterUser(string login, string password)
+        {
+            var existingUser = _userRepository.GetAllUsers().FirstOrDefault(u => u.Login == login);
+            
+            if (existingUser != null)
+            {
+                throw new ArgumentException("User with the same login already exists");
+            }
+
+            return _userRepository.AddUser(new Models.User() { 
+                Login = login,
+                Password = password
+            });
         }
     }
 }

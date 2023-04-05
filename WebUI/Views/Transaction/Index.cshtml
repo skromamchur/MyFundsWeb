@@ -1,39 +1,93 @@
 ﻿@model TransactionViewModel
 @{
-    ViewData["Title"] = "Account Page";
+    ViewData["Title"] = "Transactions";
 }
 
-<link rel="stylesheet" href="~/css/transactions.css" />
-<h2>Create Transaction</h2>
+<link rel="stylesheet" href="~/css/transactions.css?v=1" />
+<h2>Transactions</h2>
 
-@using (Html.BeginForm("Create", "Transaction", FormMethod.Post))
-{
-    @Html.LabelFor(m => m.Value)
-    @Html.TextBoxFor(m => m.Value)
-    <br />
+<button class="btn btn-primary" onclick="showCreateTransactionModal()">Create new income transaction</button>
+<button class="btn btn-primary" onclick="showCreateExpendTransactionModal()">Create new expend transaction</button>
 
-    @Html.LabelFor(m => m.Category)
-    @Html.TextBoxFor(m => m.Category)
-    <br />
+<div class="modal-wrapper income-modal" tabindex="-1" role="dialog" style="display:none">
+    <div class="modal-wrapper__dialog" role="document">
+        <div class="modal-wrapper__content">
+            <div class="modal-wrapper__body">
+                @using (Html.BeginForm("CreateIncome", "Transaction", FormMethod.Post))
+                {
+                    @Html.LabelFor(m => m.Value)
+                    @Html.TextBoxFor(m => m.Value, new { @class = "form-control" })
+                    <br />
 
-    @Html.LabelFor(m => m.IsIncome)
-    @Html.CheckBoxFor(m => m.IsIncome)
-    <br />
+                    @Html.LabelFor(m => m.Category)
+                    <select class="form-control" name="category">
+                        @foreach (var category in Model.IncomeCategories)
+                        {
+                            <option value="@category">
+                                @category
+                            </option>
+                        }
+                    </select>
+                    <br />
 
-    @Html.LabelFor(m => m.Date)
-    @Html.TextBoxFor(m => m.Date, "{0:yyyy-MM-dd}", new { @class = "datepicker" })
-    <br />
+                    @Html.LabelFor(m => m.Currency)
+                    <select class="form-control" name="currency">
+                        @foreach (var currency in Model.Currencies)
+                        {
+                            <option value="@currency">
+                                @currency
+                            </option>
+                        }
+                    </select>
+                    <br />
 
-    @Html.LabelFor(m => m.Currency)
-    @Html.TextBoxFor(m => m.Currency)
-    <br />
+                    <input class="btn btn-primary" type="submit" value="Create" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeCreateTransactionModal()">Close</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 
-    @Html.LabelFor(m => m.UserId)
-    @Html.TextBoxFor(m => m.UserId)
-    <br />
+<div class="modal-wrapper expend-modal" tabindex="-1" role="dialog" style="display:none">
+    <div class="modal-wrapper__dialog" role="document">
+        <div class="modal-wrapper__content">
+            <div class="modal-wrapper__body">
+                @using (Html.BeginForm("CreateExpend", "Transaction", FormMethod.Post))
+                {
+                    @Html.LabelFor(m => m.Value)
+                    @Html.TextBoxFor(m => m.Value, new { @class = "form-control" })
+                    <br />
 
-    <input type="submit" value="Create" />
-}
+                    @Html.LabelFor(m => m.Category)
+                    <select class="form-control" name="category">
+                        @foreach (var category in Model.ExpendCategories)
+                        {
+                            <option value="@category">
+                                @category
+                            </option>
+                        }
+                    </select>
+                    <br />
+
+                    @Html.LabelFor(m => m.Currency)
+                    <select class="form-control" name="currency">
+                        @foreach (var currency in Model.Currencies)
+                        {
+                            <option value="@currency">
+                                @currency
+                            </option>
+                        }
+                    </select>
+                    <br />
+
+                    <input class="btn btn-primary" type="submit" value="Create" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeCreateExpendTransactionModal()">Close</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="table-container">
     <table class="table">
@@ -69,3 +123,25 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    var showCreateTransactionModal = function () {
+        var modal = document.querySelector(".income-modal");
+        modal.style.display = "block";
+    };
+
+    var closeCreateTransactionModal = function () {
+        var modal = document.querySelector(".income-modal");
+        modal.style.display = "none";
+    };
+
+    var showCreateExpendTransactionModal = function () {
+        var modal = document.querySelector(".expend-modal");
+        modal.style.display = "block";
+    };
+
+    var closeCreateExpendTransactionModal = function () {
+        var modal = document.querySelector(".expend-modal");
+        modal.style.display = "none";
+    };
+</script>

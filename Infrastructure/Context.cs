@@ -10,7 +10,6 @@ namespace Infrastructure
         public Context(string connectionString) {
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
 
-            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

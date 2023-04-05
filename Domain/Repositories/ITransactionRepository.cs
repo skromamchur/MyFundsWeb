@@ -7,5 +7,7 @@ namespace Domain.Repositories
         public void addTransaction(Transaction transaction);
 
         public List<Transaction> GetUserTransactions(int UserId);
+
+        public List<Transaction> GetAllTransactions();
     }
 }

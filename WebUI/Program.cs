@@ -1,6 +1,7 @@
 using Application.Configuration;
 using Domain.Configuration;
 using Infrastructure.Configuration;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,22 @@ builder.Services
     .AddApplication()
     .AddDomain()
     .AddControllersWithViews();
+
+builder.Services.AddRazorPages();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
+    options.ExpireTimeSpan = TimeSpan.FromDays(1);
+    options.SlidingExpiration = true;
+    options.AccessDeniedPath = "/Auth";
+    options.LogoutPath = "/Auth";
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.Redirect("/Auth");
+        return Task.CompletedTask;
+    };
+});
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -39,7 +56,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapRazorPages();
+app.MapDefaultControllerRoute();
 
 app.MapControllerRoute(
     name: "default",

@@ -18,10 +18,32 @@ namespace Infrastructure.Repositories
             _context = new Context(connectionString);
         }
 
-        public void AddUser(Domain.Models.User user)
+        public User AddUser(Domain.Models.User user)
         {
-            _context.Users.Add(new Enteties.UserDB(user.Login, user.Password));
+            var userDb = new Enteties.UserDB(user.Login, user.Password);
+            _context.Users.Add(userDb);
             _context.SaveChanges();
+
+            return new User()
+            {
+                Login = userDb.Login,
+                Password = userDb.Password,
+                Id = userDb.Id,
+            };
+        }
+
+        public List<User> GetAllUsers()
+        {
+            List<UserDB> userDbs = _context.Users.ToList();
+
+            List<User> users = userDbs.Select(u => new User()
+            {
+                Id = u.Id,
+                Login = u.Login,
+                Password = u.Password,
+            }).ToList();
+            
+            return users;
         }
     }
 }

@@ -1,0 +1,32 @@
+﻿@model WebUI.Models.LoginUserViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<link rel="stylesheet" href="~/css/auth.css" />
+
+
+<div class="card">
+        <h2 class="card__title">Sign in to your account</h2>
+        <form asp-antiforgery="true" asp-controller="Auth" asp-action="Login" method="post">
+            <div class="card__input-group">
+                <label class="card__label" for="email">Login</label>
+                <input class="card__input" id="email" asp-for="Login">
+            </div>
+            <div class="card__input-group">
+                <label class="card__label" for="password">Password</label>
+                <input class="card__input" type="password" id="password" asp-for="Password">
+            </div>
+            <div>
+                <a class="card__link" asp-controller="Auth" asp-action="SignUp">Create new account</a>
+            </div>
+            <button class="card__submit" type="submit">Sign in</button>
+            <span class="card__error-message" asp-validation-for="Login"></span>
+        </form>
+</div>
+
+
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

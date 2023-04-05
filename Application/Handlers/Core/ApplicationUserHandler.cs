@@ -1,4 +1,5 @@
 ﻿using Application.Handlers.Interfaces;
+using Domain.Models;
 using Domain.Services.Interfaces;
 
 namespace Application.Handlers.Core
@@ -12,9 +13,14 @@ namespace Application.Handlers.Core
             _userService = userService;
         }
 
-        public void OnUserSignUp(string login, string password)
+        public User OnUserSignUp(string login, string password)
         {
-            _userService.RegisterUser(login, password);
+            return _userService.RegisterUser(login, password);
+        }
+
+        public User OnUserLogin(string login, string password)
+        {
+            return _userService.FindUserByCredentials(login, password);
         }
     }
 }

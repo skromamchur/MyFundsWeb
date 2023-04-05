@@ -4,6 +4,8 @@ namespace Domain.Repositories
 {
     public interface IUserRepository
     {
-        public void AddUser(User user);
+        public User AddUser(User user);
+
+        public List<User> GetAllUsers();
     }
 }

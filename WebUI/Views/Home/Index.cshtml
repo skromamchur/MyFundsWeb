@@ -1,8 +1,69 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<link rel="stylesheet" href="~/css/dashboard.css?v=1" />
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@model DashboardViewModel
+
+<div class="chart-wrapper">
+    <h2 class="chart-title">Income chart</h2>
+    <div id="chart-income"></div>
 </div>
+
+<div class="chart-wrapper">
+    <h2 class="chart-title">Expend chart</h2>
+    <div id="chart-expend"></div>
+</div>
+
+<script>
+    var incomeData = @Html.Raw(Json.Serialize(Model.incomeTransactions.Select(tc => new { data = tc.Value, label = tc.Name })));
+    var expendData = @Html.Raw(Json.Serialize(Model.expendTransactions.Select(tc => new { data = tc.Value, label = tc.Name })));
+
+    var charOptions = {
+        chart: {
+            type: "donut",
+            height: "500px"
+        },
+        brush: {
+            enabled: true
+        },
+        plotOptions: {
+            pie: {
+                expandOnClick: false,
+                donut: {
+                    labels: {
+                        show: true,
+                        name: {
+                            show: true
+                        },
+                        value: {
+                            show: true,
+                            formatter: (val) => `${val}$`
+                        }
+                    },
+                    size: "60%"
+                }
+            }
+        },
+        colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39'],
+        legend: {
+            position: "left"
+        }
+    };
+
+    var incomeOptions = {
+        ...charOptions,
+        series: incomeData.map((d) => d.data),
+        labels: incomeData.map((d) => `${d.label}: ${d.data} (${((d.data / incomeData.reduce((a, b) => a + b.data, 0)) * 100).toFixed(2)}%)`),
+    };
+
+    var expendOptions = {
+        ...charOptions,
+        series: expendData.map((d) => d.data),
+        labels: expendData.map((d) => `${d.label}: ${d.data} (${((d.data / expendData.reduce((a, b) => a + b.data, 0)) * 100).toFixed(2)}%)`),
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chart-income"), incomeOptions);
+    var expendChart = new ApexCharts(document.querySelector("#chart-expend"), expendOptions);
+
+    chart.render();
+    expendChart.render();
+</script>
