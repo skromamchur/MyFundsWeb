@@ -10,7 +10,8 @@ namespace Application.Configuration
         {
             return services
                 .AddSingleton<IApplicationUserHandler, ApplicationUserHandler>()
-                .AddSingleton<IApplicationTransactionHandler, ApplicationTransactionHandler>();
+                .AddSingleton<IApplicationTransactionHandler, ApplicationTransactionHandler>()
+                .AddSingleton<IApplicationGoalHandler, ApplicationGoalHandler>();
         }
     }
 }

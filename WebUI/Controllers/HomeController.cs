@@ -24,8 +24,8 @@ namespace WebUI.Controllers
             var expendUserTransactions = _transactionHandler.GetTransactionCategories(userId, false);
 
             return View(new DashboardViewModel { 
-                incomeTransactions = incomeUserTransactions,
-                expendTransactions = expendUserTransactions
+                IncomeTransactions = incomeUserTransactions,
+                ExpendTransactions = expendUserTransactions
             });
         }
 

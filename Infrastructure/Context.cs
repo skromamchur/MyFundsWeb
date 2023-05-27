@@ -20,5 +20,7 @@ namespace Infrastructure
 
         public DbSet<UserDB> Users { get; set; }
         public DbSet<TransactionDB> Transactions { get; set; }
+
+        public DbSet<GoalDB> Goals { get; set; }
     }
 }

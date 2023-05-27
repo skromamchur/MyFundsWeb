@@ -16,5 +16,7 @@
         public string Password { get; set; }
 
         public List<TransactionDB> Transactions { get; set; }
+
+        public List<GoalDB> Goals {get; set;}
     }
 }

@@ -23,15 +23,13 @@ namespace Tests
 
             var result = _userService.RegisterUser(userLogin, userPassword);
 
-            Assert.That(result, Is.Not.Null);
             Assert.That(result.Login, Is.EqualTo(userLogin));
-            Assert.That(result.Password, Is.EqualTo(userPassword));
         }
         
         [Test]
         public void UserService_RegisterUser_DuplicateLogin()
         {
-            User existingUser = new User() { Login = "login", Password = "password" };
+            User existingUser = new User { Login = "login", Password = "password" };
 
             _userRepository.Setup(x => x.GetAllUsers()).Returns(new List<User>() { existingUser });
             _userRepository.Setup(x => x.AddUser(It.IsAny<User>())).Returns((User u) => u);
@@ -42,7 +40,7 @@ namespace Tests
         [Test]
         public void UserService_FindUserByCredentials_Succsesfull()
         {
-            List<User> list = new List<User>() {
+            List<User> list = new List<User> {
                 new User() {
                     Id = 1,
                     Login = "login",

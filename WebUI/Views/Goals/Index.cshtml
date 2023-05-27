@@ -1,0 +1,183 @@
+﻿@model GoalViewModel
+@{
+    ViewData["Title"] = "Goals";
+}
+
+<link rel="stylesheet" href="~/css/goals.css?v=2" />
+<h2>Goals</h2>
+
+<button class="btn btn-primary" onclick="showCreateTransactionModal()">Create new goal</button>
+
+<div class="modal-wrapper goal-modal" tabindex="-1" role="dialog" style="display:none">
+    <div class="modal-wrapper__dialog" role="document">
+        <div class="modal-wrapper__content">
+            <div class="modal-wrapper__body">
+                @using (Html.BeginForm("CreateGoal", "Goals", FormMethod.Post))
+                {
+                    @Html.LabelFor(m => m.Name, "Goal Name:")
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    <br />
+
+                    @Html.LabelFor(m => m.FinalValue, "Final Value:")
+                    @Html.TextBoxFor(m => m.FinalValue, new { @class = "form-control" })
+                    <br />
+
+                    <input class="btn btn-primary" type="submit" value="Create" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeCreateTransactionModal()">Close</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-wrapper add-money" tabindex="-1" role="dialog" style="display:none">
+    <div class="modal-wrapper__dialog" role="document">
+        <div class="modal-wrapper__content">
+            <div class="modal-wrapper__body">
+                @using (Html.BeginForm("AddMoneyToGoal", "Goals", FormMethod.Post))
+                {
+                    @Html.HiddenFor(m => m.GoalId, new { id = "goal-id-input" })
+
+                    @Html.LabelFor(m => m.AddMoney, "Amount to Add:")
+                    @Html.TextBoxFor(m => m.AddMoney, new { @class = "form-control" })
+                    <br />
+
+                    <input class="btn btn-primary" type="submit" value="Add" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeAddMoneyModal()">Close</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-wrapper update-goal" tabindex="-1" role="dialog" style="display:none">
+    <div class="modal-wrapper__dialog" role="document">
+        <div class="modal-wrapper__content">
+            <div class="modal-wrapper__body">
+                @using (Html.BeginForm("UpdateGoal", "Goals", FormMethod.Post))
+                {
+                    @Html.HiddenFor(m => m.GoalId, new { id = "goal-id-input-update" })
+
+                    @Html.LabelFor(m => m.updateGoalForm.Name, "Goal Name:")
+                    @Html.TextBoxFor(m => m.updateGoalForm.Name, new { @class = "form-control",  id = "name-input-update" })
+                    <br />
+
+                    @Html.LabelFor(m => m.updateGoalForm.FinalValue, "Final Value:")
+                    @Html.TextBoxFor(m => m.updateGoalForm.FinalValue, new { @class = "form-control",  id = "final-value-input-update" })
+                    <br />
+
+                    @Html.LabelFor(m => m.updateGoalForm.CurrentValue, "Current Value:")
+                    @Html.TextBoxFor(m => m.updateGoalForm.CurrentValue, new { @class = "form-control", id = "current-value-input-update" })
+                    <br />
+
+                    <input class="btn btn-primary" type="submit" value="Update" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeUpdateGoalModal()">Close</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Current</th>
+                <th>Final</th>
+                <th>Currency</th>
+                <th>Progress</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var goal in Model.Goals)
+            {
+                decimal progressPercentage = (goal.CurrentValue / goal.FinalValue) * 100;
+                string widthStyle = $"width: {Math.Floor(progressPercentage)}%; position : absolute; top:0; left:0; bottom: 0; right:0; background: blue;";
+
+                <tr>
+                    <td>@goal.Date.ToShortDateString()</td>
+                    <td>@goal.Name</td>
+                    <td>@goal.CurrentValue</td>
+                    <td>@goal.FinalValue</td>
+                    <td>@goal.Currency</td>
+                    <td class="progress-container">
+                        <div class="progress_wrapper">
+                            <div class="progress_wrapper_full"/>
+                            <div style="@widthStyle" class="progress_wrapper_real"/>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="icons_container">
+                            @if (goal.CurrentValue < goal.FinalValue)
+                            {
+                                <span class="plus-icon" onclick="showAddMoneyModal(@goal.Id)"><i class="bi bi-bag-plus"></i></span>
+                            }
+                            else{
+                                <span class="plus-icon"></span>
+                            }
+                            <span class="pencil-icon" onclick="showUpdateGoalModal(@goal.Id, `@goal.Name`, @goal.FinalValue, @goal.CurrentValue)"><i class="bi bi-pencil"></i></span>
+                            <form method="post" action="/Goals/DeleteGoal">
+                                <input type="hidden" name="goalId" value="@goal.Id" />
+                                <button type="submit" class="trash-icon"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var showCreateTransactionModal = function () {
+        var modal = document.querySelector(".goal-modal");
+        modal.style.display = "block";
+    };
+
+    var closeCreateTransactionModal = function () {
+        var modal = document.querySelector(".goal-modal");
+        modal.style.display = "none";
+    };
+
+    var showAddMoneyModal = function (goalId) {
+        var modal = document.querySelector(".add-money");
+        modal.style.display = "block";
+
+        var goalIdInput = document.getElementById("goal-id-input");
+        goalIdInput.value = goalId;
+    };
+
+    var closeAddMoneyModal = function () {
+        var modal = document.querySelector(".add-money");
+        modal.style.display = "none";
+    };
+
+    var showUpdateGoalModal = function (goalId, name, finalValue, currentValue) {
+        var modal = document.querySelector(".update-goal");
+        modal.style.display = "block";
+
+        var goalIdInput = document.getElementById("goal-id-input-update");
+        goalIdInput.value = goalId;
+
+        var nameInput = document.getElementById("name-input-update");
+        nameInput.value = name;
+
+        var finalValueInput = document.getElementById("final-value-input-update");
+        finalValueInput.value = finalValue;
+
+        var CurrentValueInput = document.getElementById("current-value-input-update");
+        CurrentValueInput.value = currentValue;
+
+        var goalIdInput = document.getElementById("goal-id-input-update");
+        goalIdInput.value = goalId;
+    };
+
+    var closeUpdateGoalModal = function () {
+        var modal = document.querySelector(".update-goal");
+        modal.style.display = "none";
+    };
+</script>

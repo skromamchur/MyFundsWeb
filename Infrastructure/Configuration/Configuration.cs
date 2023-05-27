@@ -11,7 +11,8 @@ namespace Infrastructure.Configuration
         {
             return services
                    .AddSingleton<IUserRepository>(Provider => new UserRepository(configuration.GetSection("ConnectionString").Value!))
-                   .AddSingleton<ITransactionRepository>(Provider => new TransactionRepository(configuration.GetSection("ConnectionString").Value!));
+                   .AddSingleton<ITransactionRepository>(Provider => new TransactionRepository(configuration.GetSection("ConnectionString").Value!))
+                   .AddSingleton<IGoalRepository>(Provider => new GoalRepository(configuration.GetSection("ConnectionString").Value!));
         }
     }
 }

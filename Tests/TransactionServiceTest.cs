@@ -18,7 +18,7 @@ namespace Tests
         [Test]
         public void TransactionService_AddTransaction_OneTime()
         {
-            Transaction transaction = new Transaction(){ 
+            Transaction transaction = new Transaction{ 
                 Value = 100,
                 Currency = "usd",
                 IsIncome = false,
@@ -36,7 +36,7 @@ namespace Tests
         {
             int userId = 1;
 
-            List<Transaction> transactions = new List<Transaction>()
+            List<Transaction> transactions = new List<Transaction>
                 {
                     new Transaction { UserId = 1, IsIncome = true, Value = 100 },
                     new Transaction { UserId = 2, IsIncome = false, Value = 50 },

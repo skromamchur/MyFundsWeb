@@ -99,11 +99,11 @@ namespace WebUI.Controllers
                 User registeredUser = _userHandler.OnUserSignUp(user.Login, user.Password);
 
                 var claims = new List<Claim>
-            {
-                new Claim("Id", registeredUser.Id.ToString()),
-                new Claim(ClaimTypes.Role, "Administrator"),
-                new Claim(ClaimTypes.Name, registeredUser.Login)
-            };
+                {
+                    new Claim("Id", registeredUser.Id.ToString()),
+                    new Claim(ClaimTypes.Role, "Administrator"),
+                    new Claim(ClaimTypes.Name, registeredUser.Login)
+                };
 
                 var claimsIdentity = new ClaimsIdentity(
                     claims, CookieAuthenticationDefaults.AuthenticationScheme);

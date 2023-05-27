@@ -10,7 +10,8 @@ namespace Domain.Configuration
         public static IServiceCollection AddDomain(this IServiceCollection services) {
             return services
                 .AddSingleton<IUserService, UserService>()
-                .AddSingleton<ITransactionService, TransactionService>();
+                .AddSingleton<ITransactionService, TransactionService>()
+                .AddSingleton<IGoalService, GoalService>();
         }
     }
 }

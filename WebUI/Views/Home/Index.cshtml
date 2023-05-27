@@ -14,8 +14,8 @@
 </div>
 
 <script>
-    var incomeData = @Html.Raw(Json.Serialize(Model.incomeTransactions.Select(tc => new { data = tc.Value, label = tc.Name })));
-    var expendData = @Html.Raw(Json.Serialize(Model.expendTransactions.Select(tc => new { data = tc.Value, label = tc.Name })));
+    var incomeData = @Html.Raw(Json.Serialize(Model.IncomeTransactions.Select(tc => new { data = tc.Value, label = tc.Name })));
+    var expendData = @Html.Raw(Json.Serialize(Model.ExpendTransactions.Select(tc => new { data = tc.Value, label = tc.Name })));
 
     var charOptions = {
         chart: {
